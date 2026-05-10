@@ -1,0 +1,58 @@
+package boundary;
+
+import control.CadastroController;
+import java.util.Scanner;
+
+public class TelaCadastro {
+    CadastroController controller = new CadastroController();
+    Scanner scan = new Scanner(System.in);
+
+    public void iniciar() {
+        System.out.println("--- TELA DE CADASTRO ---");
+
+        // 1. Coleta de dados iniciais
+        System.out.print("Nome: ");
+        String nome = scan.nextLine();
+
+        System.out.print("Número de Celular: ");
+        String celular = scan.nextLine();
+
+        // 2. Envio do SMS via Controlador
+        boolean statusEnviado = controller.enviarCodigoSMS(celular);
+
+        if (statusEnviado) {
+            // 3. Validação do Código
+            System.out.print("Digite o Código recebido: ");
+            String codigo = scan.nextLine();
+
+            boolean codigoValido = controller.validarCodigo(codigo);
+
+            if (codigoValido) {
+                System.out.println("Código validado com sucesso!");
+                
+                // Criamos o registro do assinante (usando nome e celular como "dados")
+                controller.criarAssinante(nome + ", " + celular);
+                System.out.println("Usuário cadastrado!");
+
+                // 4. Escolha do Plano
+                System.out.println("\n--- ESCOLHA SEU PLANO ---");
+                System.out.println("1- Básico - R$49,90/semana: 4 frutas, 3 legumes, 2 verduras.");
+                System.out.println("2- Plus - R$79,90/semana: 7 frutas, 5 legumes, 4 verduras.");
+                System.out.println("3- Premium - R$109,90/semana: 10 frutas, 8 legumes, 6 verduras.");
+                
+                System.out.print("Escolher Plano (digite o número): ");
+                int plano = scan.nextInt();
+                scan.nextLine(); // Limpa o buffer do teclado 🧹
+
+                // 5. Finalização da Assinatura (usando ID 1 como exemplo)
+                controller.criarAssinatura(1, plano);
+                System.out.println("Assinatura realizada com sucesso!");
+
+            } else {
+                System.out.println("Código inválido.");
+            }
+        } else {
+            System.out.println("Erro ao enviar SMS. Verifique o número.");
+        }
+    }
+}

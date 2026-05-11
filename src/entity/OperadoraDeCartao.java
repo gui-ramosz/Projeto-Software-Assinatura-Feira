@@ -9,13 +9,23 @@ public class OperadoraDeCartao {
         this.endpointApi = endpointApi;
     }
 
-    public Boolean autorizarTransacao(Double valor) {
-        System.out.println("Transação autorizada pela operadora " + nomeOperadora);
-        return true;
-    }
-
     public String getNomeOperadora() { return nomeOperadora; }
     public void setNomeOperadora(String nomeOperadora) { this.nomeOperadora = nomeOperadora; }
     public String getEndpointApi() { return endpointApi; }
     public void setEndpointApi(String endpointApi) { this.endpointApi = endpointApi; }
+
+    public boolean validarLimite(CartaoDeCredito cartao, double valorCompra) {
+        if (valorCompra <= 0) {
+            return false;
+        }
+        // Simulação de limite do cliente
+        double limiteDisponivel = cartao.getLimite();
+
+        if (valorCompra > limiteDisponivel) {
+            System.out.println("Operadora: Compra negada. Limite insuficiente.");
+            return false;
+        }
+
+        return true; // Passou no limite
+    }
 }

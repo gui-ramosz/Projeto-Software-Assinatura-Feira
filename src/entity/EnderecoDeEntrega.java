@@ -24,7 +24,7 @@ public class EnderecoDeEntrega {
     public Double calcularFrete() {
         return 15.00; // Valor simulado
     }
-
+    
     public Integer getIdEndereco() { return idEndereco; }
     public void setIdEndereco(Integer idEndereco) { this.idEndereco = idEndereco; }
     public String getCep() { return cep; }

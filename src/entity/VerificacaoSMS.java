@@ -8,6 +8,15 @@ public class VerificacaoSMS {
     private Date dataHoraExpiracao;
     private String status;
 
+
+    public VerificacaoSMS(){
+        this.idVerificacao = 0;
+        this.codigoGerado = "0000";
+        this.dataHoraEnvio = new Date();
+        this.dataHoraExpiracao = new Date();
+        this.status = "PENDENTE"; 
+    }
+
     public VerificacaoSMS(Integer idVerificacao, String codigoGerado, Date dataHoraEnvio, Date dataHoraExpiracao, String status) {
         this.idVerificacao = idVerificacao;
         this.codigoGerado = codigoGerado;

@@ -8,6 +8,12 @@ public class Assinatura {
     private Integer idAssinante;
     private Integer idPlano;
 
+    public Assinatura() {
+        this.protocolo = "PENDENTE";
+        this.status = "Inativa";
+        this.dataInicio = new Date();
+    }
+
     public Assinatura(String protocolo, Date dataInicio, String status, Integer idAssinante, Integer idPlano) {
         this.protocolo = protocolo;
         this.dataInicio = dataInicio;
@@ -19,10 +25,12 @@ public class Assinatura {
     public void criarAssinatura(Integer idPlano) {
         this.idPlano = idPlano;
         this.status = "Ativa";
+        this.dataInicio = new Date();
     }
 
     public void cancelarAssinatura() {
         this.status = "Cancelada";
+        System.out.println("Assinatura " + protocolo + " foi cancelada com sucesso.");
     }
 
     public String verificarStatus() {
@@ -30,13 +38,13 @@ public class Assinatura {
     }
 
     public String getProtocolo() { return protocolo; }
-    public void setProtocolo(String protocolo) { this.protocolo = protocolo; }
-    public Date getDataInicio() { return dataInicio; }
-    public void setDataInicio(Date dataInicio) { this.dataInicio = dataInicio; }
+    public void setProtocolo(String p) { protocolo = p; }
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String s) { status = s; }
     public Integer getIdAssinante() { return idAssinante; }
-    public void setIdAssinante(Integer idAssinante) { this.idAssinante = idAssinante; }
+    public void setIdAssinante(Integer id) { idAssinante = id; }
     public Integer getIdPlano() { return idPlano; }
-    public void setIdPlano(Integer idPlano) { this.idPlano = idPlano; }
+    public void setIdPlano(Integer id) { idPlano = id; }
+    public Date getDataInicio() { return dataInicio; }
+    public void setDataInicio(Date d) { dataInicio = d; }
 }

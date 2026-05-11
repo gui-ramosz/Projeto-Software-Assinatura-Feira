@@ -7,126 +7,101 @@ public class TelaCatalogo {
     private CheckoutController controller = new CheckoutController();
     private Scanner scan = new Scanner(System.in);
 
-    public void iniciar(int limF, int limV, int limL) {      
-        exibirMenuFrutas(limF);
-        exibirMenuVerduras(limV);
-        exibirMenuLegumes(limL);    
-    }
+    public void iniciar(int limF, int limL, int limV, int idAssinante, double valorPlano) {
+        boolean cestaConfirmada = false;
 
-    public void exibirMenuFrutas(int limite) {
-        int selecionados = 0;
-        while (selecionados < limite) {
-            System.out.println("\n--- FRUTAS ---");
-            System.out.println("1 - Maçã (un.)");
-            System.out.println("2 - Banana (1/2 dúzia)");
-            System.out.println("3 - Uva (250g)");
-            System.out.println("4 - Abacaxi (un.)");
-            System.out.println("5 - Próximo");
-            System.out.println("0 - Voltar");
+        while (!cestaConfirmada) {
+            controller.getItensCesta().clear();
 
-            System.out.print("Escolha o ID: ");
-            int id = scan.nextInt();
+            System.out.println("\n========================================");
+            System.out.println("       MONTE SUA CESTA DA SEMANA");
+            System.out.println("========================================");
+            
+            exibirMenuCategoria("FRUTAS", limF, new String[]{
+                "Banana (1/2 dúzia)", "Maçã (4 un.)", "Uva (250g)", "Abacaxi (un.)"
+            });
 
-            if (id == 0) return; 
-            if (id == 5) break;  
+            exibirMenuCategoria("LEGUMES", limL, new String[]{
+                "Batata (500g)", "Cenoura (3 un.)", "Abóbora (1/2 un.)", "Cebola (3 un.)"
+            });
 
-            System.out.print("Quantidade: ");
-            int qtd = scan.nextInt();
+            exibirMenuCategoria("VERDURAS", limV, new String[]{
+                "Alface (un.)", "Couve (un.)", "Espinafre (un.)", "Brócolis (un.)"
+            });
 
-            if (selecionados + qtd <= limite) {
-                String nome = switch(id) {
-                    case 1 -> "Maçã (un.)";
-                    case 2 -> "Banana (1/2 dúzia)";
-                    case 3 -> "Uva (250g)";
-                    case 4 -> "Abacaxi (un.)";
-                    default -> null;
-                };
-                
-                if (nome != null) {
-                    controller.adicionarItem(nome, qtd);
-                    selecionados += qtd;
-                }
+            System.out.println("\n========================================");
+            System.out.println("              MINHA CESTA");
+            System.out.println("========================================");
+            if (controller.getItensCesta().isEmpty()) {
+                System.out.println("Sua cesta está vazia!");
             } else {
-                System.out.println("Quantidade excede o limite do plano!");
+                for (String item : controller.getItensCesta()) {
+                    System.out.println("✅ " + item);
+                }
+            }
+            System.out.println("========================================");
+
+            int op = 0;
+            while (op != 1 && op != 2) {
+                System.out.println("\nTudo certo com sua cesta?");
+                System.out.println("1 - Sim, ir para o pagamento");
+                System.out.println("2 - Não, quero refazer TUDO do zero");
+                System.out.print("Escolha (1 ou 2): ");
+                
+                op = scan.nextInt();
+                scan.nextLine(); 
+
+                if (op == 1) {
+                    cestaConfirmada = true;
+                } else if (op == 2) {
+                    System.out.println("\nApagando cesta... Vamos começar de novo!");
+                } else {
+                    System.out.println("Opção inválida! Digite 1 para avançar ou 2 para refazer.");
+                }
             }
         }
+        
+        TelaCheckout telaCheckout = new TelaCheckout(this.controller, idAssinante, valorPlano);
+        telaCheckout.iniciar();
     }
 
-    public void exibirMenuVerduras(int limite) {
+    private void exibirMenuCategoria(String nomeCategoria, int limite, String[] itens) {
         int selecionados = 0;
+        System.out.println("\nINICIANDO SELEÇÃO DE: " + nomeCategoria);
+
         while (selecionados < limite) {
-            System.out.println("\n--- VERDURAS ---");
-            System.out.println("1 - Alface (un.)");
-            System.out.println("2 - Repolho (un.)");
-            System.out.println("3 - Brócolis (250g)");
-            System.out.println("4 - Coentro (un.)");
-            System.out.println("5 - Próximo");
-            System.out.println("0 - Voltar");
-
-            System.out.print("Escolha o ID: ");
+            System.out.println("\n>>> Categoria: " + nomeCategoria + " | Limite: " + limite + " | Na cesta: " + selecionados);
+            for (int i = 0; i < itens.length; i++) {
+                System.out.println((i + 1) + " - " + itens[i]);
+            }
+            
+            int opcaoAvancar = itens.length + 1;
+            System.out.println(opcaoAvancar + " - [ FINALIZAR " + nomeCategoria + " / AVANÇAR ]");
+            
+            System.out.print("Escolha o item (1 a " + opcaoAvancar + "): ");
             int id = scan.nextInt();
+            
+            if (id == opcaoAvancar) {
+                break;
+            }
 
-            if (id == 0) return; // Volta para o menu de frutas
-            if (id == 5) break;  // Sai deste loop e vai para legumes
+            if (id >= 1 && id <= itens.length) {
+                System.out.print("Quantidade desejada de " + itens[id - 1] + ": ");
+                int qtd = scan.nextInt();
 
-            System.out.print("Quantidade: ");
-            int qtd = scan.nextInt();
-
-            if (selecionados + qtd <= limite) {
-                String nome = switch(id) {
-                    case 1 -> "Alface (un.)";
-                    case 2 -> "Repolho (un.)";
-                    case 3 -> "Brócolis (250g)";
-                    case 4 -> "Coentro (un.)";
-                    default -> null;
-                };
-                
-                if (nome != null) {
-                    controller.adicionarItem(nome, qtd);
+                if (qtd <= 0) {
+                    System.out.println("Quantidade deve ser maior que zero!");
+                } else if (selecionados + qtd <= limite) {
+                    controller.adicionarItem(itens[id - 1], qtd);
                     selecionados += qtd;
+                    System.out.println("Adicionado à cesta!");
+                } else {
+                    System.out.println("Erro: Você só pode adicionar mais " + (limite - selecionados) + " item(ns) desta categoria.");
                 }
             } else {
-                System.out.println("Quantidade excede o limite do plano!");
+                System.out.println("ID inválido! Selecione apenas valores que estão no menu.");
             }
         }
-    }
-
-    public void exibirMenuLegumes(int limite) {
-        int selecionados = 0;
-        while (selecionados < limite) {
-            System.out.println("\n--- LEGUMES ---");
-            System.out.println("1 - Batata (250g)");
-            System.out.println("2 - Cenoura (250g)");
-            System.out.println("3 - Cebola (250g)");
-            System.out.println("4 - Abóbora (1kg)");
-            System.out.println("5 - Próximo");
-            System.out.println("0 - Voltar");
-
-            System.out.print("Escolha o ID: ");
-            int id = scan.nextInt();
-
-            if (id == 0) return; // Volta para o menu de verduras
-            if (id == 5) break;  // Finaliza a fase de catálogo
-
-            System.out.print("Quantidade: ");
-            int qtd = scan.nextInt();
-
-            if (selecionados + qtd <= limite) {
-                String nome = switch(id) {
-                    case 1 -> "Batata (250g)";
-                    case 2 -> "Cenoura (250g)";
-                    case 3 -> "Cebola (250g)";
-                    case 4 -> "Abóbora (1kg)";
-                    default -> null;
-                };
-                
-                if (nome != null) {
-                    controller.adicionarItem(nome, qtd);
-                    selecionados += qtd;
-                }
-            } else {
-                System.out.println("Quantidade excede o limite do plano!");
-            }
-        }
+        System.out.println(nomeCategoria + " finalizadas!");
     }
 }

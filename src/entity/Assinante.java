@@ -7,6 +7,10 @@ public class Assinante {
     private String numeroCelular;
     private Date dataCadastro;
 
+    public Assinante() {
+        this.dataCadastro = new Date();
+    }
+
     public Assinante(Integer idAssinante, String nome, String numeroCelular, Date dataCadastro) {
         this.idAssinante = idAssinante;
         this.nome = nome;
@@ -15,19 +19,19 @@ public class Assinante {
     }
 
     public void cadastrar(String dados) {
-        System.out.println("Cadastrando: " + dados);
+        System.out.println("Cadastro Realizado!");
     }
 
     public void atualizarDados() {
-        System.out.println("Atualizando dados do assinante.");
+        System.out.println("Dados de " + nome + " atualizados no sistema.");
     }
 
     public Integer getIdAssinante() { return idAssinante; }
-    public void setIdAssinante(Integer idAssinante) { this.idAssinante = idAssinante; }
+    public void setIdAssinante(Integer id) { idAssinante = id; }
     public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setNome(String n) { nome = n; }
     public String getNumeroCelular() { return numeroCelular; }
-    public void setNumeroCelular(String numeroCelular) { this.numeroCelular = numeroCelular; }
+    public void setNumeroCelular(String c) { numeroCelular = c; }
     public Date getDataCadastro() { return dataCadastro; }
-    public void setDataCadastro(Date dataCadastro) { this.dataCadastro = dataCadastro; }
+    public void setDataCadastro(Date d) { dataCadastro = d; }
 }

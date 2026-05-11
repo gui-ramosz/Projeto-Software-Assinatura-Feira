@@ -7,13 +7,15 @@ public class CartaoDeCredito {
     private String numeroFinal;
     private Integer mesValidade;
     private Integer anoValidade;
+    private Integer limite;
 
-    public CartaoDeCredito(Integer idCartao, String nomeTitular, String numeroFinal, Integer mesValidade, Integer anoValidade) {
+    public CartaoDeCredito(Integer idCartao, String nomeTitular, String numeroFinal, Integer mesValidade, Integer anoValidade, Integer limite) {
         this.idCartao = idCartao;
         this.nomeTitular = nomeTitular;
         this.numeroFinal = numeroFinal;
         this.mesValidade = mesValidade;
         this.anoValidade = anoValidade;
+        this.limite = limite;
     }
 
     public void salvarCartao() {
@@ -45,4 +47,5 @@ public class CartaoDeCredito {
     public void setMesValidade(Integer mesValidade) { this.mesValidade = mesValidade; }
     public Integer getAnoValidade() { return anoValidade; }
     public void setAnoValidade(Integer anoValidade) { this.anoValidade = anoValidade; }
+    public Integer getLimite(){ return limite;}
 }
